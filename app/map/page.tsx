@@ -18,6 +18,8 @@ const REGIONS = [
   { key: "jeju", label: "제주" },
 ];
 
+const DELAY_CLASSES = ["", "delay-100", "delay-200", "delay-300", "delay-400"];
+
 export default function MapPage() {
   const [activeRegion, setActiveRegion] = useState("all");
   const [loading, setLoading] = useState(true);
@@ -75,8 +77,12 @@ export default function MapPage() {
   if (loading) {
     return (
       <div className="pb-24">
+        {/* Title skeleton */}
+        <div className="p-6 pb-2">
+          <SkeletonText className="w-36 h-8" />
+        </div>
         {/* Skeleton: tab pills row */}
-        <div className="flex gap-3 px-6 py-4">
+        <div className="flex gap-3 px-6 py-1 mb-4">
           <Skeleton className="h-9 rounded-full w-16" />
           <Skeleton className="h-9 rounded-full w-14" />
           <Skeleton className="h-9 rounded-full w-14" />
@@ -84,13 +90,12 @@ export default function MapPage() {
         </div>
         {/* Skeleton: conquest bar */}
         <div className="px-6 mb-4">
-          <SkeletonText className="w-40 mb-3" />
-          <Skeleton className="h-2 rounded-full w-full" />
+          <Skeleton className="h-24 rounded-2xl w-full" />
         </div>
         {/* Skeleton: 2-col grid of 4 cards */}
         <div className="grid grid-cols-2 gap-4 px-6">
           {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={i} className="aspect-square rounded-2xl" />
+            <Skeleton key={i} className="aspect-[4/3] rounded-2xl animate-shimmer" />
           ))}
         </div>
       </div>
@@ -100,10 +105,12 @@ export default function MapPage() {
   return (
     <div className="pb-24 animate-fade-in">
       {/* Page title */}
-      <h1 className="text-display-sm text-on-surface p-6 pb-0">정복 맵</h1>
+      <h1 className="text-display-sm text-on-surface p-6 pb-2">
+        🗺️ 정복 맵
+      </h1>
 
       {/* Region tabs */}
-      <div className="px-6 py-4">
+      <div className="px-6">
         <RegionTabs
           regions={REGIONS}
           activeRegion={activeRegion}
@@ -112,7 +119,7 @@ export default function MapPage() {
       </div>
 
       {/* Conquest bar */}
-      <div className="px-6 mb-4">
+      <div className="px-6 mt-4">
         <ConquestBar
           visited={conquestStats.visited}
           total={conquestStats.total}
@@ -121,28 +128,35 @@ export default function MapPage() {
       </div>
 
       {/* Sauna grid or empty state */}
-      {filteredSaunas.length === 0 ? (
-        <EmptyState icon="🧖" message="이 지역에 등록된 사우나가 없어요!" />
-      ) : (
-        <div className="grid grid-cols-2 gap-4 px-6">
-          {filteredSaunas.map((sauna) => {
-            const conquered = conqueredIds.has(sauna.id);
-            return (
-              <SaunaCard
-                key={sauna.id}
-                sauna={sauna}
-                isConquered={conquered}
-                visitedAt={visitedAtMap[sauna.id]}
-                onClick={() => {
-                  if (!conquered) {
-                    setSelectedSaunaId(sauna.id);
-                  }
-                }}
-              />
-            );
-          })}
-        </div>
-      )}
+      <div className="mt-4">
+        {filteredSaunas.length === 0 ? (
+          <EmptyState icon="🧖" message="이 지역에 등록된 사우나가 없어요!" />
+        ) : (
+          <div className="grid grid-cols-2 gap-4 px-6">
+            {filteredSaunas.map((sauna, index) => {
+              const conquered = conqueredIds.has(sauna.id);
+              const delayClass = DELAY_CLASSES[Math.min(index, DELAY_CLASSES.length - 1)];
+              return (
+                <div
+                  key={sauna.id}
+                  className={`animate-fade-in-up ${delayClass}`}
+                >
+                  <SaunaCard
+                    sauna={sauna}
+                    isConquered={conquered}
+                    visitedAt={visitedAtMap[sauna.id]}
+                    onClick={() => {
+                      if (!conquered) {
+                        setSelectedSaunaId(sauna.id);
+                      }
+                    }}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
 
       {/* Bottom sheet for locked sauna reviews */}
       <BottomSheet

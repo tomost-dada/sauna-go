@@ -22,6 +22,8 @@ const categories = [
   { key: "jjimjilbang", label: "찜질방" },
 ] as const;
 
+const DELAY_CLASSES = ["", "delay-100", "delay-200", "delay-300", "delay-400"];
+
 export default function CommunityPage() {
   const [regionFilter, setRegionFilter] = useState<string | null>(null);
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
@@ -42,20 +44,29 @@ export default function CommunityPage() {
     return (
       <div className="pb-24">
         {/* Title skeleton */}
-        <div className="p-6 pb-0">
+        <div className="p-6 pb-2">
           <SkeletonText className="w-32 h-8" />
         </div>
-        {/* Filter skeleton */}
-        <div className="px-6 py-4 flex gap-2">
-          <Skeleton className="w-16 h-9" />
-          <Skeleton className="w-16 h-9" />
-          <Skeleton className="w-16 h-9" />
+        {/* Region filter skeleton */}
+        <div className="px-6 flex gap-2 mb-3">
+          <Skeleton className="w-12 h-9 rounded-full" />
+          <Skeleton className="w-12 h-9 rounded-full" />
+          <Skeleton className="w-14 h-9 rounded-full" />
+          <Skeleton className="w-12 h-9 rounded-full" />
+        </div>
+        {/* Category filter skeleton */}
+        <div className="px-6 flex gap-2 mb-4">
+          <Skeleton className="w-12 h-9 rounded-full" />
+          <Skeleton className="w-16 h-9 rounded-full" />
+          <Skeleton className="w-14 h-9 rounded-full" />
+          <Skeleton className="w-12 h-9 rounded-full" />
+          <Skeleton className="w-16 h-9 rounded-full" />
         </div>
         {/* Card skeletons */}
         <div className="flex flex-col gap-4 px-6">
-          <Skeleton className="h-40" />
-          <Skeleton className="h-40" />
-          <Skeleton className="h-40" />
+          <Skeleton className="h-44 rounded-2xl animate-shimmer" />
+          <Skeleton className="h-44 rounded-2xl animate-shimmer" />
+          <Skeleton className="h-44 rounded-2xl animate-shimmer" />
         </div>
       </div>
     );
@@ -64,10 +75,10 @@ export default function CommunityPage() {
   return (
     <div className="pb-24 animate-fade-in">
       {/* Title */}
-      <h1 className="p-6 pb-0 text-display-sm text-on-surface">같이 가요</h1>
+      <h1 className="text-display-sm text-on-surface p-6 pb-2">같이 가요</h1>
 
       {/* Filters */}
-      <div className="px-6 py-4">
+      <div className="px-6">
         {/* Region filters */}
         <div className="overflow-x-auto flex gap-2 scrollbar-hide mb-3">
           {regions.map((r) => (
@@ -81,7 +92,7 @@ export default function CommunityPage() {
           ))}
         </div>
         {/* Category filters */}
-        <div className="overflow-x-auto flex gap-2 scrollbar-hide">
+        <div className="overflow-x-auto flex gap-2 scrollbar-hide mb-3">
           {categories.map((c) => (
             <Chip
               key={c.label}
@@ -95,13 +106,18 @@ export default function CommunityPage() {
       </div>
 
       {/* Post list */}
-      <div className="flex flex-col gap-4 px-6">
+      <div className="flex flex-col gap-4 px-6 mt-2">
         {filteredPosts.length === 0 ? (
           <EmptyState icon="📭" message="모집글이 없습니다" />
         ) : (
-          filteredPosts.map((post, index) => (
-            <PostCard key={post.id} post={post} even={index % 2 === 0} />
-          ))
+          filteredPosts.map((post, index) => {
+            const delayClass = DELAY_CLASSES[Math.min(index, DELAY_CLASSES.length - 1)];
+            return (
+              <div key={post.id} className={`animate-fade-in-up ${delayClass}`}>
+                <PostCard post={post} even={index % 2 === 0} />
+              </div>
+            );
+          })
         )}
       </div>
     </div>

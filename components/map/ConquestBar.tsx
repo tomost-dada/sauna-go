@@ -8,10 +8,13 @@ interface ConquestBarProps {
 
 export default function ConquestBar({ visited, total, percent }: ConquestBarProps) {
   return (
-    <div>
+    <div className="bg-surface-container-lowest rounded-2xl p-5 shadow-ambient-sm">
       <div className="flex items-center justify-between mb-3">
-        <span className="text-headline-md text-on-surface">{visited}/{total} 정복</span>
-        <span className="text-title-md text-secondary">{percent}%</span>
+        <div className="flex items-center gap-2">
+          <span className="text-xl">🏔️</span>
+          <span className="text-headline-md text-on-surface">{visited}/{total} 정복</span>
+        </div>
+        <span className="text-display-sm text-secondary font-display">{percent}%</span>
       </div>
       <ProgressBar variant="secondary" percent={percent} />
     </div>

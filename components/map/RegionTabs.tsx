@@ -15,7 +15,7 @@ interface RegionTabsProps {
 
 export default function RegionTabs({ regions, activeRegion, onChange }: RegionTabsProps) {
   return (
-    <div className="overflow-x-auto flex gap-3 scrollbar-hide">
+    <div className="overflow-x-auto flex gap-3 scrollbar-hide py-1">
       {regions.map((region) => (
         <Chip
           key={region.key}
