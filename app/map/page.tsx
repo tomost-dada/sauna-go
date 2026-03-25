@@ -98,7 +98,7 @@ export default function MapPage() {
   }
 
   return (
-    <div className="pb-24">
+    <div className="pb-24 animate-fade-in">
       {/* Page title */}
       <h1 className="text-display-sm text-on-surface p-6 pb-0">정복 맵</h1>
 

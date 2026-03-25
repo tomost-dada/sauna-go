@@ -64,7 +64,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="pb-24">
+    <div className="pb-24 animate-fade-in">
       {/* Profile Header */}
       <div className="p-6 flex flex-col items-center">
         <div className="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center text-white text-display-sm font-display">

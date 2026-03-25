@@ -44,7 +44,7 @@ export default function Home() {
   }
 
   return (
-    <div className="pb-24">
+    <div className="pb-24 animate-fade-in">
       {/* Section 1: Profile */}
       <div className="p-6">
         <div className="flex items-center gap-4">

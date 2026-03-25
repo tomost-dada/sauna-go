@@ -80,7 +80,7 @@ export default function PostCard({ post, even }: PostCardProps) {
             />
           </svg>
           {/* 참여하기 button */}
-          <button className="px-5 py-2 rounded-3xl bg-secondary-container text-secondary text-body-md font-semibold">
+          <button className="px-5 py-2 rounded-3xl bg-secondary-container text-secondary text-body-md font-semibold active:scale-[0.98] transition-transform">
             참여하기
           </button>
         </div>

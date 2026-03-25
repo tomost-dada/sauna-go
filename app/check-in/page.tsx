@@ -69,7 +69,7 @@ export default function CheckInPage() {
   }
 
   return (
-    <div className="p-6 pb-24">
+    <div className="p-6 pb-24 animate-fade-in">
       <h1 className="text-display-sm text-on-surface mb-6">체크인</h1>
 
       <SaunaSelector

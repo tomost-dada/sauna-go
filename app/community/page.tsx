@@ -62,7 +62,7 @@ export default function CommunityPage() {
   }
 
   return (
-    <div className="pb-24">
+    <div className="pb-24 animate-fade-in">
       {/* Title */}
       <h1 className="p-6 pb-0 text-display-sm text-on-surface">같이 가요</h1>
 

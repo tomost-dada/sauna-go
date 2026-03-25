@@ -61,7 +61,7 @@ export default function CertificationCardPage() {
   };
 
   return (
-    <div className="p-6 pb-24 flex flex-col items-center">
+    <div className="p-6 pb-24 flex flex-col items-center animate-fade-in">
       {/* 1:1 Certification Card */}
       <div className="w-full max-w-[350px] aspect-square relative rounded-2xl overflow-hidden shadow-ambient">
         {/* Background image */}
