@@ -25,6 +25,15 @@ function LockIcon() {
   );
 }
 
+function formatDate(dateStr: string) {
+  try {
+    const d = new Date(dateStr);
+    return `${d.getFullYear()}.${d.getMonth() + 1}.${d.getDate()}`;
+  } catch {
+    return dateStr;
+  }
+}
+
 const CATEGORY_LABELS: Record<Sauna["category"], string> = {
   finnish: "핀란드 사우나",
   bulgama: "불가마",
@@ -48,7 +57,7 @@ export default function SaunaCard({ sauna, isConquered, visitedAt, onClick }: Sa
         {isConquered ? (
           /* Conquered: badge overlaid at bottom-right of image */
           <div className="absolute bottom-2 right-2">
-            <Badge variant="conquered">{visitedAt ?? ""}</Badge>
+            <Badge variant="conquered">{visitedAt ? formatDate(visitedAt) : ""}</Badge>
           </div>
         ) : (
           /* Locked: dark overlay + centered lock icon */
