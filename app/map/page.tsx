@@ -145,11 +145,7 @@ export default function MapPage() {
                     sauna={sauna}
                     isConquered={conquered}
                     visitedAt={visitedAtMap[sauna.id]}
-                    onClick={() => {
-                      if (!conquered) {
-                        setSelectedSaunaId(sauna.id);
-                      }
-                    }}
+                    onClick={() => setSelectedSaunaId(sauna.id)}
                   />
                 </div>
               );
