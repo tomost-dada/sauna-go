@@ -48,13 +48,8 @@ export default function CertificationCardPage() {
   const handleShare = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({
-          title: `${saunaName} 인증 카드`,
-          url: window.location.href,
-        });
-      } catch {
-        // user cancelled
-      }
+        await navigator.share({ title: `${saunaName} 인증 카드`, url: window.location.href });
+      } catch { /* cancelled */ }
     } else {
       await navigator.clipboard.writeText(window.location.href);
       setShowToast(true);
@@ -76,110 +71,85 @@ export default function CertificationCardPage() {
           className="absolute inset-0 w-full h-full object-cover scale-110"
         />
         {/* Gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/70" />
-        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/80" />
 
-        {/* Content */}
-        <div className="relative z-10 h-full flex flex-col p-6">
+        {/* Content — use absolute positioning to prevent overflow */}
+        <div className="absolute inset-0 z-10 flex flex-col p-5">
 
-          {/* Top: branding + overall score + avatar */}
+          {/* Top row: branding + score + avatar */}
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-label-md text-white/60 tracking-widest">SAUNA GO</p>
-              <p className="text-label-sm text-white/40 mt-1">{visitedDate}</p>
+              <p className="text-label-md text-white/60 tracking-widest text-[10px]">SAUNA GO</p>
+              <p className="text-label-sm text-white/40 mt-0.5" style={{ fontSize: 10 }}>{visitedDate}</p>
             </div>
-            {/* Overall score center */}
             <div className="flex flex-col items-center">
-              <span className="text-display-lg text-white font-bold">{avgRating}</span>
-              <span className="text-label-sm text-white/50">종합</span>
+              <span className="text-white font-bold font-display" style={{ fontSize: 32, lineHeight: 1 }}>{avgRating}</span>
+              <span className="text-white/50" style={{ fontSize: 10 }}>종합</span>
             </div>
-            {/* User avatar */}
             <div
-              className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center text-white text-label-md font-bold"
-              style={{ boxShadow: "0 4px 16px rgba(254,125,94,0.4)" }}
+              className="w-7 h-7 rounded-full gradient-primary flex items-center justify-center text-white font-bold"
+              style={{ fontSize: 11, boxShadow: "0 4px 12px rgba(254,125,94,0.4)" }}
             >
               {currentUser.nickname.charAt(0)}
             </div>
           </div>
 
-          {/* Conquered Stamp */}
+          {/* Stamp — centered */}
           <div className="flex-1 flex items-center justify-center">
-            <div
-              className="relative flex flex-col items-center justify-center"
-              style={{
-                width: 160,
-                height: 160,
-              }}
-            >
-              {/* Outer stamp ring */}
+            <div className="relative flex flex-col items-center justify-center" style={{ width: 130, height: 130 }}>
               <div
                 className="absolute inset-0 rounded-full"
                 style={{
-                  border: "4px solid rgba(254, 125, 94, 0.9)",
-                  boxShadow: "0 0 40px rgba(254, 125, 94, 0.3), inset 0 0 40px rgba(254, 125, 94, 0.1)",
+                  border: "3px solid rgba(254, 125, 94, 0.85)",
+                  boxShadow: "0 0 30px rgba(254, 125, 94, 0.25)",
                   transform: "rotate(-12deg)",
                 }}
               />
-              {/* Inner stamp ring */}
               <div
                 className="absolute rounded-full"
-                style={{
-                  inset: 8,
-                  border: "2px solid rgba(254, 125, 94, 0.6)",
-                  transform: "rotate(-12deg)",
-                }}
+                style={{ inset: 7, border: "1.5px solid rgba(254, 125, 94, 0.5)", transform: "rotate(-12deg)" }}
               />
-              {/* Stamp content */}
-              <div
-                className="relative flex flex-col items-center justify-center"
-                style={{ transform: "rotate(-12deg)" }}
-              >
-                <span className="text-label-md text-primary-fixed tracking-[0.2em]">CONQUERED</span>
-                <span className="text-display-sm text-white font-bold mt-0.5">정복 완료</span>
-                <div className="w-16 h-0.5 bg-primary-container/60 rounded-full my-1.5" />
-                <span className="text-label-sm text-primary-fixed/80">{avgRating} / 5.0</span>
+              <div className="relative flex flex-col items-center justify-center" style={{ transform: "rotate(-12deg)" }}>
+                <span className="text-primary-fixed font-bold tracking-[0.15em]" style={{ fontSize: 10 }}>CONQUERED</span>
+                <span className="text-white font-bold mt-0.5" style={{ fontSize: 20 }}>정복 완료</span>
+                <div className="w-12 h-0.5 bg-primary-container/60 rounded-full my-1" />
+                <span className="text-primary-fixed/80" style={{ fontSize: 10 }}>{avgRating} / 5.0</span>
               </div>
             </div>
           </div>
 
           {/* Bottom section */}
-          <div className="mt-auto">
+          <div>
             {/* One-line review */}
             {checkInData.oneLineReview?.trim() && (
-              <div className="mb-5">
-                <div className="glass-dark rounded-2xl px-5 py-4">
-                  <p className="text-white/40 text-label-sm mb-1">한줄평</p>
-                  <p className="text-headline-md text-white leading-snug">
-                    &ldquo;{checkInData.oneLineReview}&rdquo;
-                  </p>
-                </div>
+              <div className="glass-dark rounded-xl px-4 py-3 mb-3">
+                <p className="text-white/40 mb-0.5" style={{ fontSize: 10 }}>한줄평</p>
+                <p className="text-white font-semibold" style={{ fontSize: 15, lineHeight: 1.4 }}>
+                  &ldquo;{checkInData.oneLineReview}&rdquo;
+                </p>
               </div>
             )}
 
-            {/* Sauna name + location */}
-            <p className="text-display-sm text-white font-bold">{saunaName}</p>
-            {sauna && (
-              <p className="text-body-md text-white/50 mt-1">{sauna.address}</p>
-            )}
+            {/* Sauna name */}
+            <p className="text-white font-bold" style={{ fontSize: 18 }}>{saunaName}</p>
 
-            {/* Ratings list */}
-            <div className="mt-4 bg-white/10 rounded-2xl p-4 backdrop-blur-sm flex flex-col gap-2.5">
-              {ratings.map(({ label, value }) => (
-                <div key={label} className="flex items-center justify-between">
-                  <span className="text-label-sm text-white/70 w-14">{label}</span>
-                  <div className="[&_span]:text-white [&_svg]:text-white flex-1 flex justify-center">
-                    <StarRating value={value} readonly size="sm" />
+            {/* Ratings — compact horizontal layout */}
+            <div className="mt-3 bg-white/10 rounded-xl px-3 py-2.5 backdrop-blur-sm">
+              <div className="flex justify-between">
+                {ratings.map(({ label, value }) => (
+                  <div key={label} className="flex flex-col items-center gap-0.5">
+                    <span className="text-white/60" style={{ fontSize: 9 }}>{label}</span>
+                    <span className="text-white font-bold" style={{ fontSize: 14 }}>{value}</span>
                   </div>
-                  <span className="text-label-sm text-white/50 w-6 text-right">{value}</span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
 
-            {/* User info footer */}
-            <div className="flex items-center gap-2 mt-4 pt-3" style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}>
-              <span className="text-body-md text-white/70">{currentUser.nickname}</span>
-              <span className="text-label-sm text-white/40">Lv.{currentUser.level}</span>
-              <span className="text-label-sm text-white/40">{currentUser.title}</span>
+            {/* User footer */}
+            <div className="flex items-center gap-2 mt-3">
+              <span className="text-white/60" style={{ fontSize: 11 }}>{currentUser.nickname}</span>
+              <span className="text-white/40" style={{ fontSize: 10 }}>Lv.{currentUser.level}</span>
+              <span className="text-white/40" style={{ fontSize: 10 }}>{currentUser.title}</span>
             </div>
           </div>
         </div>

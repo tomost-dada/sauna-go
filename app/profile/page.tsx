@@ -83,14 +83,13 @@ export default function ProfilePage() {
     return (
       <div className="pb-24">
         {/* Skeleton header */}
-        <div className="gradient-hero rounded-b-3xl p-6 pt-8 pb-8 flex flex-col items-center">
-          <Skeleton className="w-20 h-20 rounded-full" />
-          <SkeletonText className="w-32 mt-4" />
-          <SkeletonText className="w-24 mt-2" />
-          <SkeletonText className="w-16 mt-3" />
-          <SkeletonText className="w-full mt-3" />
-          <SkeletonText className="w-40 mt-2" />
-          <SkeletonText className="w-28 mt-1" />
+        <div className="gradient-hero rounded-b-3xl px-6 pt-6 pb-5 flex items-center gap-4">
+          <Skeleton className="w-14 h-14 rounded-full flex-shrink-0" />
+          <div className="flex-1 flex flex-col gap-2">
+            <SkeletonText className="w-32" />
+            <Skeleton className="h-2 w-full" />
+            <SkeletonText className="w-24" />
+          </div>
         </div>
         {/* Skeleton collection */}
         <div className="px-6 mt-6">
@@ -142,37 +141,25 @@ export default function ProfilePage() {
   return (
     <div className="pb-24 animate-fade-in">
 
-      {/* ── 1. Profile Header ── */}
-      <div className="gradient-hero rounded-b-3xl p-6 pt-8 pb-8 flex flex-col items-center">
-        <div className="w-20 h-20 rounded-full gradient-primary shadow-glow-primary flex items-center justify-center text-white text-display-sm font-display">
+      {/* ── 1. Profile Header (compact) ── */}
+      <div className="gradient-hero rounded-b-3xl px-6 pt-6 pb-5 flex items-center gap-4">
+        <div className="w-14 h-14 rounded-full gradient-primary shadow-glow-primary flex items-center justify-center text-white text-headline-md font-display flex-shrink-0">
           {currentUser.nickname.charAt(0)}
         </div>
-        <p className="text-headline-md text-on-surface mt-4">{currentUser.nickname}</p>
-        <div className="mt-2">
-          <Badge variant="level">{currentUser.title}</Badge>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2">
+            <p className="text-headline-md text-on-surface truncate">{currentUser.nickname}</p>
+            <Badge variant="level">Lv.{levelInfo.level}</Badge>
+          </div>
+          <div className="mt-2">
+            <ProgressBar variant="primary" percent={xpProgress.percent} />
+          </div>
+          <div className="flex items-center justify-between mt-1.5">
+            <span className="text-title-md text-primary font-bold">{remainingXP > 0 ? `${remainingXP} XP 더 필요!` : "MAX LEVEL!"}</span>
+            {nextLevel && <span className="text-label-sm text-on-surface-variant">→ {nextLevel.title}</span>}
+          </div>
         </div>
 
-        {/* Level display */}
-        <p className="text-display-lg text-primary mt-4 font-display">Lv. {levelInfo.level}</p>
-
-        {/* Progress bar */}
-        <div className="w-full mt-3">
-          <ProgressBar variant="primary" percent={xpProgress.percent} />
-        </div>
-
-        {/* 다음 레벨까지 */}
-        {nextLevel ? (
-          <>
-            <p className="text-title-md text-primary mt-2 text-center">
-              <span className="font-bold">{remainingXP} XP</span> 더 필요!
-            </p>
-            <p className="text-label-sm text-on-surface-variant mt-1 text-center">
-              다음 칭호: {nextLevel.title}
-            </p>
-          </>
-        ) : (
-          <p className="text-title-md text-primary mt-2 text-center font-bold">최고 레벨 달성! 🎉</p>
-        )}
       </div>
 
       {/* ── 2. Collection / Items Section ── */}
