@@ -17,23 +17,32 @@ export default function CollectionGrid({ collections, meta }: CollectionGridProp
         const isUnlocked = !!collectionEntry;
 
         if (isUnlocked) {
-          const ringClass =
+          const containerClass =
             item.rarity === "legendary"
-              ? "ring-2 ring-primary-container/50 rounded-2xl p-2"
+              ? "bg-primary-container/10 ring-2 ring-primary-container/30 rounded-2xl"
               : item.rarity === "rare"
-              ? "ring-2 ring-tertiary/30 rounded-2xl p-2"
-              : "p-2";
+              ? "bg-tertiary/5 ring-1 ring-tertiary/20 rounded-2xl"
+              : "bg-surface-container-lowest";
+
+          const emojiClass =
+            item.rarity === "legendary" ? "text-3xl animate-float" : "text-3xl";
 
           return (
-            <div key={item.itemType} className={`flex flex-col items-center gap-1 ${ringClass}`}>
-              <span className="text-3xl">{item.emoji}</span>
+            <div
+              key={item.itemType}
+              className={`flex flex-col items-center gap-1.5 p-2 transition-all ${containerClass}`}
+            >
+              <span className={emojiClass}>{item.emoji}</span>
               <span className="text-label-sm text-on-surface text-center">{item.displayName}</span>
             </div>
           );
         }
 
         return (
-          <div key={item.itemType} className="flex flex-col items-center gap-1 opacity-20">
+          <div
+            key={item.itemType}
+            className="flex flex-col items-center gap-1.5 p-2 rounded-2xl opacity-25"
+          >
             <span className="text-3xl">{item.emoji}</span>
             <span className="text-label-sm text-on-surface-variant text-center">???</span>
           </div>
