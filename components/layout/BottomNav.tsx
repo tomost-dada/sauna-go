@@ -47,17 +47,26 @@ export default function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 max-w-[390px] mx-auto z-30 bg-surface-container-low/80 backdrop-blur-[16px] flex items-end justify-around px-2 pt-2 pb-6">
+    <nav
+      className="fixed bottom-0 left-0 right-0 max-w-[390px] mx-auto z-30 glass flex items-end justify-around px-2 pt-3"
+      style={{
+        paddingBottom: "max(env(safe-area-inset-bottom, 8px), 12px)",
+        boxShadow: "0 -1px 0 rgba(44,47,48,0.06), 0 -8px 24px rgba(44,47,48,0.04)",
+      }}
+    >
       {tabs.map((tab, index) => {
         if (tab === null) {
-          // Center CHECK-IN button
+          // Center CHECK-IN FAB
           return (
             <Link
               key="check-in"
               href="/check-in"
-              className="flex flex-col items-center gap-1"
+              className="flex flex-col items-center gap-1 -mt-5"
             >
-              <span className="w-14 h-14 rounded-full flex items-center justify-center -mt-6 bg-gradient-to-br from-primary-container to-primary-fixed shadow-ambient">
+              <span
+                className="w-14 h-14 rounded-full gradient-primary flex items-center justify-center"
+                style={{ boxShadow: "0 8px 32px rgba(254, 125, 94, 0.40)" }}
+              >
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="white" />
                 </svg>
@@ -73,12 +82,29 @@ export default function BottomNav() {
           <Link
             key={tab.href}
             href={tab.href}
-            className={`flex flex-col items-center gap-1 text-label-sm ${
-              isActive ? "text-primary" : "text-on-surface-variant"
-            }`}
+            className="flex flex-col items-center gap-1 relative"
           >
-            {tab.icon}
-            <span>{tab.label}</span>
+            {/* Active pill indicator */}
+            {isActive && (
+              <span
+                className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-10 h-8 rounded-full bg-primary-container/15"
+                aria-hidden="true"
+              />
+            )}
+            <span
+              className={`relative transition-colors duration-200 ${
+                isActive ? "text-primary" : "text-on-surface-variant"
+              }`}
+            >
+              {tab.icon}
+            </span>
+            <span
+              className={`text-label-sm transition-colors duration-200 ${
+                isActive ? "text-primary" : "text-on-surface-variant"
+              }`}
+            >
+              {tab.label}
+            </span>
           </Link>
         );
       })}

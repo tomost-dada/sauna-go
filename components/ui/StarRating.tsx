@@ -55,9 +55,10 @@ export default function StarRating({
         return (
           <span
             key={i}
-            className={filled ? "text-primary-container" : "text-surface-container-high"}
+            className={`transition-transform duration-150 ${
+              filled ? "text-primary-container" : "text-surface-container-high"
+            } ${!readonly && onChange ? "active:scale-125 cursor-pointer" : "cursor-default"}`}
             onClick={!readonly && onChange ? () => onChange(starValue) : undefined}
-            style={{ cursor: !readonly && onChange ? "pointer" : "default" }}
           >
             {filled ? <FilledStar size={px} /> : <EmptyStar size={px} />}
           </span>

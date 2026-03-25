@@ -9,13 +9,18 @@ interface ChipProps {
 }
 
 export default function Chip({ active = false, children, onClick }: ChipProps) {
-  const colorClass = active
-    ? "bg-primary-container text-white"
-    : "bg-surface-container-low text-on-surface-variant";
-
   return (
     <div
-      className={`px-4 py-2 rounded-full text-body-md transition-all duration-200 cursor-pointer active:scale-[0.98] transition-transform ${colorClass}`}
+      className={`px-4 py-2 rounded-full text-body-md cursor-pointer select-none transition-all duration-300 active:scale-[0.96] ${
+        active
+          ? "gradient-primary text-white"
+          : "bg-surface-container-low text-on-surface-variant"
+      }`}
+      style={
+        active
+          ? { boxShadow: "0 4px 16px rgba(254, 125, 94, 0.30)" }
+          : undefined
+      }
       onClick={onClick}
     >
       {children}

@@ -6,13 +6,13 @@ interface SkeletonProps {
 
 export function Skeleton({ className }: SkeletonProps) {
   return (
-    <div className={`animate-pulse bg-surface-container rounded-2xl ${className ?? ""}`} />
+    <div className={`animate-shimmer rounded-2xl ${className ?? ""}`} />
   );
 }
 
 export function SkeletonText({ className }: SkeletonProps) {
   return (
-    <div className={`animate-pulse bg-surface-container-high rounded-full h-4 ${className ?? ""}`} />
+    <div className={`animate-shimmer rounded-full h-4 ${className ?? ""}`} />
   );
 }
 
