@@ -2,6 +2,7 @@
 
 import Badge from "@/components/ui/Badge";
 import { CommunityPost } from "@/lib/types";
+import MeetupStatus from "./MeetupStatus";
 
 const regionMap: Record<string, string> = {
   seoul: "서울",
@@ -23,20 +24,28 @@ function formatMeetDate(dateStr: string): string {
   return `${month}월 ${day}일`;
 }
 
+const ctaLabelMap: Record<CommunityPost["status"], string> = {
+  recruiting: "참여하기",
+  confirmed: "채팅방 보기",
+  completed: "후기 보기",
+};
+
 interface PostCardProps {
   post: CommunityPost;
   even: boolean;
+  onClick?: () => void;
 }
 
-export default function PostCard({ post, even }: PostCardProps) {
+export default function PostCard({ post, even, onClick }: PostCardProps) {
   const bgClass = even ? "bg-surface-container-lowest" : "bg-surface-container-low";
 
   return (
-    <div className={`${bgClass} rounded-2xl p-5`}>
-      {/* Top row: host nickname + HOST badge */}
+    <div className={`${bgClass} rounded-2xl p-5 cursor-pointer active:scale-[0.98] transition-all`} onClick={onClick}>
+      {/* Top row: host nickname + HOST badge + status */}
       <div className="flex items-center gap-2">
         <span className="text-title-md text-on-surface">{post.hostNickname}</span>
         <Badge variant="host">HOST</Badge>
+        <MeetupStatus status={post.status} />
       </div>
 
       {/* Sauna name */}
@@ -65,8 +74,9 @@ export default function PostCard({ post, even }: PostCardProps) {
         <button
           className="px-5 py-2.5 rounded-3xl gradient-primary text-white text-body-md font-semibold active:scale-[0.97] transition-all"
           style={{ boxShadow: "0 4px 16px rgba(254, 125, 94, 0.50)" }}
+          onClick={(e) => { e.stopPropagation(); onClick?.(); }}
         >
-          참여하기
+          {ctaLabelMap[post.status]}
         </button>
       </div>
     </div>

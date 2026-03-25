@@ -86,4 +86,15 @@ export type CommunityPost = {
   meetDate: string;
   description: string;
   createdAt: string;
+  status: 'recruiting' | 'confirmed' | 'completed';
+};
+
+export type ChatMessage = {
+  id: string;
+  postId: string;
+  userId: string;
+  nickname: string;
+  message: string;
+  timestamp: string;
+  isSystem: boolean;
 };

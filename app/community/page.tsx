@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { communityPosts } from "@/lib/mock-data";
 import Chip from "@/components/ui/Chip";
 import { Skeleton, SkeletonText } from "@/components/ui/Skeleton";
@@ -25,6 +26,7 @@ const categories = [
 const DELAY_CLASSES = ["", "delay-100", "delay-200", "delay-300", "delay-400"];
 
 export default function CommunityPage() {
+  const router = useRouter();
   const [regionFilter, setRegionFilter] = useState<string | null>(null);
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -114,7 +116,7 @@ export default function CommunityPage() {
             const delayClass = DELAY_CLASSES[Math.min(index, DELAY_CLASSES.length - 1)];
             return (
               <div key={post.id} className={`animate-fade-in-up ${delayClass}`}>
-                <PostCard post={post} even={index % 2 === 0} />
+                <PostCard post={post} even={index % 2 === 0} onClick={() => router.push(`/community/${post.id}`)} />
               </div>
             );
           })

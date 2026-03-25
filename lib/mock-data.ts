@@ -8,6 +8,7 @@ import {
   SaunaReview,
   Quest,
   CommunityPost,
+  ChatMessage,
 } from "./types";
 
 // ─── Current User ────────────────────────────────────────────────────────────
@@ -485,6 +486,7 @@ export const communityPosts: CommunityPost[] = [
     meetDate: "2026-04-05T15:00:00Z",
     description: "용산 드래곤 사우나에서 같이 아우프구스 체험해요! 초보자 환영합니다 :)",
     createdAt: "2026-03-20T10:00:00Z",
+    status: "recruiting",
   },
   {
     id: "post-2",
@@ -500,6 +502,7 @@ export const communityPosts: CommunityPost[] = [
     meetDate: "2026-04-12T17:00:00Z",
     description: "애월 노을 보면서 불가마 같이 즐겨요~ 제주 한 달 살기 중인 분들 특히 환영!",
     createdAt: "2026-03-21T09:30:00Z",
+    status: "recruiting",
   },
   {
     id: "post-3",
@@ -515,6 +518,7 @@ export const communityPosts: CommunityPost[] = [
     meetDate: "2026-03-28T20:00:00Z",
     description: "퇴근 후 판교 사우나 모임. 개발자/직장인 모여요! 자리 마감 임박.",
     createdAt: "2026-03-18T18:00:00Z",
+    status: "confirmed",
   },
   {
     id: "post-4",
@@ -530,6 +534,7 @@ export const communityPosts: CommunityPost[] = [
     meetDate: "2026-04-19T13:00:00Z",
     description: "종로 전통 찜질방에서 황토방 투어! 옛날 감성 좋아하시는 분들 함께해요.",
     createdAt: "2026-03-22T14:00:00Z",
+    status: "recruiting",
   },
   {
     id: "post-5",
@@ -545,7 +550,29 @@ export const communityPosts: CommunityPost[] = [
     meetDate: "2026-04-25T05:30:00Z",
     description: "성산일출봉 일출 보고 사우나! 새벽 4시 반 집결. 인생 경험 원하는 분 오세요.",
     createdAt: "2026-03-23T08:00:00Z",
+    status: "completed",
   },
+];
+
+// ─── Chat Messages ────────────────────────────────────────────────────────────
+
+export const chatMessages: ChatMessage[] = [
+  // post-1 messages
+  { id: "msg-1-1", postId: "post-1", userId: "user-2", nickname: "사우나킹", message: "안녕하세요! 4월 5일 용산 드래곤에서 아우프구스 체험 모임입니다 🔥", timestamp: "2026-03-20T10:05:00Z", isSystem: false },
+  { id: "msg-1-2", postId: "post-1", userId: "user-1", nickname: "열탕러버", message: "오 저도 참여하고 싶어요! 초보인데 괜찮을까요?", timestamp: "2026-03-20T11:30:00Z", isSystem: false },
+  { id: "msg-1-3", postId: "post-1", userId: "user-2", nickname: "사우나킹", message: "물론이죠! 초보자분들도 많이 오세요 ㅎㅎ 수건이랑 물만 챙겨오시면 됩니다", timestamp: "2026-03-20T11:45:00Z", isSystem: false },
+  { id: "msg-1-4", postId: "post-1", userId: "user-7", nickname: "핀란드매니아", message: "저도 참여할게요! 타올 세트 여분으로 가져갈게요", timestamp: "2026-03-21T09:00:00Z", isSystem: false },
+  // post-3 messages (confirmed)
+  { id: "msg-3-1", postId: "post-3", userId: "user-4", nickname: "판교개발자", message: "금요일 퇴근 후 8시에 판교 사우나 앞에서 만나요!", timestamp: "2026-03-18T18:30:00Z", isSystem: false },
+  { id: "msg-3-2", postId: "post-3", userId: "user-8", nickname: "코딩하는사우너", message: "넵! 저 포함 5명 다 모인거죠?", timestamp: "2026-03-19T10:00:00Z", isSystem: false },
+  { id: "msg-3-3", postId: "post-3", userId: "user-4", nickname: "판교개발자", message: "네 맞습니다! 인원 확정이요~", timestamp: "2026-03-19T10:15:00Z", isSystem: false },
+  { id: "msg-3-4", postId: "post-3", userId: "system", nickname: "시스템", message: "🎉 모임이 확정되었습니다! 3월 28일 20:00 성남 판교 사우나에서 만나요.", timestamp: "2026-03-19T10:16:00Z", isSystem: true },
+  { id: "msg-3-5", postId: "post-3", userId: "user-4", nickname: "판교개발자", message: "다들 늦지 않게 와주세요! 사물함 번호는 당일 공유할게요", timestamp: "2026-03-20T15:00:00Z", isSystem: false },
+  // post-5 messages (completed)
+  { id: "msg-5-1", postId: "post-5", userId: "user-6", nickname: "웰니스워커", message: "새벽 4시 반 성산일출봉 주차장 집합입니다!", timestamp: "2026-03-23T08:30:00Z", isSystem: false },
+  { id: "msg-5-2", postId: "post-5", userId: "user-1", nickname: "열탕러버", message: "일출 보고 사우나라니... 인생 버킷리스트예요 🌅", timestamp: "2026-03-24T20:00:00Z", isSystem: false },
+  { id: "msg-5-3", postId: "post-5", userId: "system", nickname: "시스템", message: "🎉 모임이 확정되었습니다! 4월 25일 05:30 성산 일출 사우나에서 만나요.", timestamp: "2026-03-25T10:00:00Z", isSystem: true },
+  { id: "msg-5-4", postId: "post-5", userId: "system", nickname: "시스템", message: "✅ 모임이 완료되었습니다! 체크인을 잊지 마세요.", timestamp: "2026-04-25T10:00:00Z", isSystem: true },
 ];
 
 // ─── Sauna Reviews ────────────────────────────────────────────────────────────
