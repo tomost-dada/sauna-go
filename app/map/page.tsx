@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useRouter } from "next/navigation";
+import { createPortal } from "react-dom";
 import { saunas, checkIns, saunaReviews, currentUser } from "@/lib/mock-data";
 import { calculateConquestRate } from "@/lib/utils";
 import RegionTabs from "@/components/map/RegionTabs";
 import ConquestBar from "@/components/map/ConquestBar";
 import SaunaCard from "@/components/map/SaunaCard";
-import BottomSheet from "@/components/ui/BottomSheet";
 import { Skeleton, SkeletonText } from "@/components/ui/Skeleton";
 import EmptyState from "@/components/ui/EmptyState";
 import StarRating from "@/components/ui/StarRating";
@@ -21,6 +22,7 @@ const REGIONS = [
 const DELAY_CLASSES = ["", "delay-100", "delay-200", "delay-300", "delay-400"];
 
 export default function MapPage() {
+  const router = useRouter();
   const [activeRegion, setActiveRegion] = useState("all");
   const [loading, setLoading] = useState(true);
   const [selectedSaunaId, setSelectedSaunaId] = useState<string | null>(null);
@@ -103,11 +105,17 @@ export default function MapPage() {
   }
 
   return (
-    <div className="pb-24 animate-fade-in">
-      {/* Page title */}
-      <h1 className="text-display-sm text-on-surface p-6 pb-2">
-        🗺️ 정복 맵
-      </h1>
+    <div className="pb-24 animate-fade-in relative">
+      {/* Header */}
+      <div className="flex items-center justify-between p-6 pb-2">
+        <h1 className="text-display-sm text-on-surface">🗺️ 정복 맵</h1>
+        <button
+          onClick={() => router.push("/")}
+          className="px-4 py-2 rounded-full bg-surface-container-lowest shadow-ambient-sm text-label-md text-on-surface-variant active:scale-[0.97] transition-all"
+        >
+          ← 홈
+        </button>
+      </div>
 
       {/* Region tabs */}
       <div className="px-6">
@@ -154,28 +162,60 @@ export default function MapPage() {
         )}
       </div>
 
-      {/* Bottom sheet for locked sauna reviews */}
-      <BottomSheet
-        isOpen={selectedSaunaId !== null}
-        onClose={() => setSelectedSaunaId(null)}
-        title={selectedSauna?.name ?? ""}
-      >
-        {selectedReviews.length === 0 ? (
-          <p className="text-body-md text-on-surface-variant">아직 리뷰가 없어요.</p>
-        ) : (
-          <div className="flex flex-col gap-4">
-            {selectedReviews.map((review, i) => (
-              <div key={i} className="flex flex-col gap-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-title-sm text-on-surface">{review.nickname}</span>
-                  <StarRating value={review.ratingOverall} readonly size="sm" />
-                </div>
-                <p className="text-body-sm text-on-surface-variant">{review.oneLineReview}</p>
+      {/* Review Popup (portal to escape 390px body) */}
+      {selectedSaunaId !== null && typeof document !== "undefined" && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center px-6">
+          {/* Overlay */}
+          <div
+            className="absolute inset-0 bg-on-surface/40 animate-fade-in"
+            onClick={() => setSelectedSaunaId(null)}
+          />
+          {/* Popup */}
+          <div className="relative bg-surface-container-lowest rounded-3xl w-full max-w-[340px] shadow-ambient-lg animate-fade-in-up max-h-[70vh] flex flex-col overflow-hidden">
+            {/* Header */}
+            <div className="p-5 pb-3 flex items-start justify-between">
+              <div className="flex-1 min-w-0">
+                <p className="text-headline-md text-on-surface truncate">{selectedSauna?.name}</p>
+                <p className="text-label-sm text-on-surface-variant mt-1">
+                  🏔️ {selectedSauna?.totalConqueredCount}명 정복
+                </p>
               </div>
-            ))}
+              <button
+                onClick={() => setSelectedSaunaId(null)}
+                className="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant text-lg shrink-0 ml-3"
+              >
+                ✕
+              </button>
+            </div>
+            {/* Reviews */}
+            <div className="px-5 pb-5 overflow-y-auto flex-1">
+              {selectedReviews.length === 0 ? (
+                <div className="py-8 text-center">
+                  <span className="text-3xl">🧖</span>
+                  <p className="text-body-md text-on-surface-variant mt-2">아직 리뷰가 없어요</p>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-3">
+                  {selectedReviews.map((review, i) => (
+                    <div key={i} className="bg-surface-container-low rounded-2xl p-4">
+                      <div className="flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-full bg-surface-container-high flex items-center justify-center text-label-sm text-on-surface-variant font-semibold flex-shrink-0">
+                          {review.nickname.charAt(0)}
+                        </div>
+                        <span className="text-title-md text-on-surface">{review.nickname}</span>
+                        <StarRating value={review.ratingOverall} readonly size="sm" />
+                      </div>
+                      <p className="text-body-md text-on-surface mt-2">&ldquo;{review.oneLineReview}&rdquo;</p>
+                      <p className="text-label-sm text-on-surface-variant mt-2">{review.visitedAt}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
-        )}
-      </BottomSheet>
+        </div>,
+        document.body
+      )}
     </div>
   );
 }
