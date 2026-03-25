@@ -1,12 +1,10 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 import { saunas, checkIns, saunaReviews, currentUser } from "@/lib/mock-data";
-import { calculateConquestRate } from "@/lib/utils";
 import RegionTabs from "@/components/map/RegionTabs";
-import ConquestBar from "@/components/map/ConquestBar";
 import SaunaCard from "@/components/map/SaunaCard";
 import { Skeleton, SkeletonText } from "@/components/ui/Skeleton";
 import EmptyState from "@/components/ui/EmptyState";
@@ -55,21 +53,6 @@ export default function MapPage() {
       ? saunas
       : saunas.filter((s) => s.region === activeRegion);
 
-  // Conquest stats
-  const conquestStats = (() => {
-    if (activeRegion === "all") {
-      const visited = saunas.filter((s) => conqueredIds.has(s.id)).length;
-      const total = saunas.length;
-      const percent = total === 0 ? 0 : Math.round((visited / total) * 100);
-      return { visited, total, percent };
-    }
-    return calculateConquestRate(
-      activeRegion as "seoul" | "gyeonggi" | "jeju",
-      saunas,
-      Array.from(conqueredIds)
-    );
-  })();
-
   // Selected sauna for bottom sheet
   const selectedSauna = selectedSaunaId
     ? saunas.find((s) => s.id === selectedSaunaId)
@@ -89,10 +72,6 @@ export default function MapPage() {
           <Skeleton className="h-9 rounded-full w-14" />
           <Skeleton className="h-9 rounded-full w-14" />
           <Skeleton className="h-9 rounded-full w-14" />
-        </div>
-        {/* Skeleton: conquest bar */}
-        <div className="px-6 mb-4">
-          <Skeleton className="h-24 rounded-2xl w-full" />
         </div>
         {/* Skeleton: 2-col grid of 4 cards */}
         <div className="grid grid-cols-2 gap-4 px-6">
@@ -126,15 +105,6 @@ export default function MapPage() {
         />
       </div>
 
-      {/* Conquest bar */}
-      <div className="px-6 mt-4">
-        <ConquestBar
-          visited={conquestStats.visited}
-          total={conquestStats.total}
-          percent={conquestStats.percent}
-        />
-      </div>
-
       {/* Sauna grid or empty state */}
       <div className="mt-4">
         {filteredSaunas.length === 0 ? (
@@ -164,7 +134,7 @@ export default function MapPage() {
 
       {/* Review Popup (portal to escape 390px body) */}
       {selectedSaunaId !== null && typeof document !== "undefined" && createPortal(
-        <div className="fixed inset-0 z-[100] flex items-center justify-center px-6">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center px-6" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}>
           {/* Overlay */}
           <div
             className="absolute inset-0 bg-on-surface/40 animate-fade-in"
