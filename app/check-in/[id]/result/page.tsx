@@ -39,12 +39,11 @@ export default function CertificationCardPage() {
     { label: "사우나", value: checkInData.ratingSauna },
     { label: "청결도", value: checkInData.ratingCleanliness },
     { label: "시설", value: checkInData.ratingFacility },
-    { label: "종합", value: checkInData.ratingOverall },
   ];
 
-  const avgRating = (
-    ratings.reduce((sum, r) => sum + r.value, 0) / ratings.length
-  ).toFixed(1);
+  const avgRating = checkInData.ratingOverall > 0
+    ? checkInData.ratingOverall.toFixed(1)
+    : (ratings.reduce((sum, r) => sum + r.value, 0) / ratings.length).toFixed(1);
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -83,20 +82,23 @@ export default function CertificationCardPage() {
         {/* Content */}
         <div className="relative z-10 h-full flex flex-col p-6">
 
-          {/* Top: SAUNA GO branding + date */}
+          {/* Top: branding + overall score + avatar */}
           <div className="flex justify-between items-start">
             <div>
               <p className="text-label-md text-white/60 tracking-widest">SAUNA GO</p>
               <p className="text-label-sm text-white/40 mt-1">{visitedDate}</p>
             </div>
-            {/* User info */}
-            <div className="flex items-center gap-2">
-              <div
-                className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center text-white text-label-md font-bold"
-                style={{ boxShadow: "0 4px 16px rgba(254,125,94,0.4)" }}
-              >
-                {currentUser.nickname.charAt(0)}
-              </div>
+            {/* Overall score center */}
+            <div className="flex flex-col items-center">
+              <span className="text-display-lg text-white font-bold">{avgRating}</span>
+              <span className="text-label-sm text-white/50">종합</span>
+            </div>
+            {/* User avatar */}
+            <div
+              className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center text-white text-label-md font-bold"
+              style={{ boxShadow: "0 4px 16px rgba(254,125,94,0.4)" }}
+            >
+              {currentUser.nickname.charAt(0)}
             </div>
           </div>
 
@@ -160,14 +162,15 @@ export default function CertificationCardPage() {
               <p className="text-body-md text-white/50 mt-1">{sauna.address}</p>
             )}
 
-            {/* Ratings grid */}
-            <div className="grid grid-cols-3 gap-x-4 gap-y-3 mt-4 bg-white/10 rounded-2xl p-4 backdrop-blur-sm">
+            {/* Ratings list */}
+            <div className="mt-4 bg-white/10 rounded-2xl p-4 backdrop-blur-sm flex flex-col gap-2.5">
               {ratings.map(({ label, value }) => (
-                <div key={label} className="flex flex-col items-center gap-1">
-                  <span className="text-label-sm text-white/60">{label}</span>
-                  <div className="[&_span]:text-white [&_svg]:text-white">
+                <div key={label} className="flex items-center justify-between">
+                  <span className="text-label-sm text-white/70 w-14">{label}</span>
+                  <div className="[&_span]:text-white [&_svg]:text-white flex-1 flex justify-center">
                     <StarRating value={value} readonly size="sm" />
                   </div>
+                  <span className="text-label-sm text-white/50 w-6 text-right">{value}</span>
                 </div>
               ))}
             </div>
