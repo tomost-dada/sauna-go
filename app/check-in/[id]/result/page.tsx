@@ -45,6 +45,8 @@ export default function CertificationCardPage() {
     ? checkInData.ratingOverall.toFixed(1)
     : (ratings.reduce((sum, r) => sum + r.value, 0) / ratings.length).toFixed(1);
 
+  const hasReview = !!checkInData.oneLineReview?.trim();
+
   const handleShare = async () => {
     if (navigator.share) {
       try {
@@ -56,6 +58,34 @@ export default function CertificationCardPage() {
       setTimeout(() => setShowToast(false), 2000);
     }
   };
+
+  const Stamp = () => (
+    <div
+      className="flex flex-col items-center justify-center rounded-full"
+      style={{
+        width: 90,
+        height: 90,
+        border: "3px solid rgba(254, 125, 94, 0.85)",
+        boxShadow: "0 0 20px rgba(254, 125, 94, 0.25)",
+        transform: "rotate(15deg)",
+        background: "rgba(0,0,0,0.35)",
+        backdropFilter: "blur(2px)",
+      }}
+    >
+      <span
+        className="text-primary-fixed font-bold tracking-[0.12em]"
+        style={{ fontSize: 10, transform: "rotate(0deg)" }}
+      >
+        CLEAR!
+      </span>
+      <span
+        className="text-white font-bold"
+        style={{ fontSize: 20, lineHeight: 1.1 }}
+      >
+        {avgRating}
+      </span>
+    </div>
+  );
 
   return (
     <div className="p-4 pb-24 flex flex-col items-center animate-fade-in">
@@ -76,15 +106,11 @@ export default function CertificationCardPage() {
         {/* Content — use absolute positioning to prevent overflow */}
         <div className="absolute inset-0 z-10 flex flex-col p-5">
 
-          {/* Top row: branding + score + avatar */}
+          {/* Top row: branding + avatar (no overall score) */}
           <div className="flex justify-between items-start">
             <div>
               <p className="text-label-md text-white/60 tracking-widest text-[10px]">SAUNA GO</p>
               <p className="text-label-sm text-white/40 mt-0.5" style={{ fontSize: 10 }}>{visitedDate}</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <span className="text-white font-bold font-display" style={{ fontSize: 32, lineHeight: 1 }}>{avgRating}</span>
-              <span className="text-white/50" style={{ fontSize: 10 }}>종합</span>
             </div>
             <div
               className="w-7 h-7 rounded-full gradient-primary flex items-center justify-center text-white font-bold"
@@ -94,39 +120,28 @@ export default function CertificationCardPage() {
             </div>
           </div>
 
-          {/* Stamp — centered */}
-          <div className="flex-1 flex items-center justify-center">
-            <div className="relative flex flex-col items-center justify-center" style={{ width: 130, height: 130 }}>
-              <div
-                className="absolute inset-0 rounded-full"
-                style={{
-                  border: "3px solid rgba(254, 125, 94, 0.85)",
-                  boxShadow: "0 0 30px rgba(254, 125, 94, 0.25)",
-                  transform: "rotate(-12deg)",
-                }}
-              />
-              <div
-                className="absolute rounded-full"
-                style={{ inset: 7, border: "1.5px solid rgba(254, 125, 94, 0.5)", transform: "rotate(-12deg)" }}
-              />
-              <div className="relative flex flex-col items-center justify-center" style={{ transform: "rotate(-12deg)" }}>
-                <span className="text-primary-fixed font-bold tracking-[0.15em]" style={{ fontSize: 10 }}>CONQUERED</span>
-                <span className="text-white font-bold mt-0.5" style={{ fontSize: 20 }}>정복 완료</span>
-                <div className="w-12 h-0.5 bg-primary-container/60 rounded-full my-1" />
-                <span className="text-primary-fixed/80" style={{ fontSize: 10 }}>{avgRating} / 5.0</span>
-              </div>
+          {/* Middle spacer — fallback stamp if no review */}
+          {!hasReview && (
+            <div className="flex-1 flex items-center justify-center">
+              <Stamp />
             </div>
-          </div>
+          )}
 
-          {/* Bottom section */}
-          <div>
-            {/* One-line review */}
-            {checkInData.oneLineReview?.trim() && (
-              <div className="glass-dark rounded-xl px-4 py-3 mb-3">
-                <p className="text-white/40 mb-0.5" style={{ fontSize: 10 }}>한줄평</p>
-                <p className="text-white font-semibold" style={{ fontSize: 15, lineHeight: 1.4 }}>
-                  &ldquo;{checkInData.oneLineReview}&rdquo;
-                </p>
+          {/* Bottom section — pushed to lower ~40% when review exists */}
+          <div className={hasReview ? "mt-auto" : ""}>
+            {/* One-line review with diagonal stamp overlay */}
+            {hasReview && (
+              <div className="relative mb-3">
+                <div className="glass-dark rounded-xl px-4 py-3">
+                  <p className="text-white/40 mb-0.5" style={{ fontSize: 10 }}>한줄평</p>
+                  <p className="text-white font-semibold" style={{ fontSize: 15, lineHeight: 1.4 }}>
+                    &ldquo;{checkInData.oneLineReview}&rdquo;
+                  </p>
+                </div>
+                {/* Diagonal stamp overlapping top-right corner */}
+                <div className="absolute" style={{ top: -20, right: -10, zIndex: 20 }}>
+                  <Stamp />
+                </div>
               </div>
             )}
 
