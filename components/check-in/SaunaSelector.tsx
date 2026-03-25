@@ -29,15 +29,18 @@ export default function SaunaSelector({
 
   if (selectedSauna) {
     return (
-      <div className="bg-primary-container/10 rounded-2xl p-4 flex items-center justify-between">
+      <div className="bg-primary-container/10 rounded-2xl p-4 flex items-center justify-between shadow-ambient-sm">
         <div>
           <p className="text-title-md text-on-surface">{selectedSauna.name}</p>
-          <p className="text-body-md text-on-surface-variant">
+          <p className="text-body-md text-on-surface-variant mt-0.5">
             {selectedSauna.address}
           </p>
+          <span className="inline-block mt-2 px-2 py-0.5 rounded-full bg-surface-container text-label-sm text-on-surface-variant">
+            {CATEGORY_LABELS[selectedSauna.category]}
+          </span>
         </div>
         <button
-          className="text-label-md text-primary cursor-pointer ml-4 shrink-0"
+          className="text-label-md text-primary cursor-pointer ml-4 shrink-0 px-3 py-1.5 rounded-2xl hover:bg-primary/10 transition-all"
           onClick={() => {
             setQuery("");
             onSelect("");
@@ -59,34 +62,39 @@ export default function SaunaSelector({
 
   return (
     <div className="flex flex-col gap-2">
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="사우나 검색..."
-        className="bg-surface-container-highest rounded-2xl px-4 py-3 text-body-lg text-on-surface outline-none w-full focus:bg-surface-container-lowest focus:shadow-focus-primary"
-      />
+      <div className="relative">
+        <span className="absolute left-5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px] pointer-events-none">
+          🔍
+        </span>
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="사우나 검색..."
+          className="bg-surface-container-highest/60 rounded-2xl pl-12 pr-5 py-4 text-body-lg text-on-surface outline-none w-full focus:bg-surface-container-lowest focus:shadow-focus-primary transition-all"
+        />
+      </div>
       {query.length > 0 && (
-        <div className="flex flex-col gap-1 mt-1">
+        <div className="flex flex-col gap-1 mt-2">
           {filtered.length === 0 ? (
-            <p className="text-body-md text-on-surface-variant text-center py-4">
+            <p className="text-body-md text-on-surface-variant text-center py-8">
               일치하는 사우나가 없습니다
             </p>
           ) : (
             filtered.map((sauna) => (
               <div
                 key={sauna.id}
-                className="py-3 px-4 rounded-2xl cursor-pointer transition-colors hover:bg-surface-container-lowest"
+                className="p-4 rounded-2xl cursor-pointer transition-all hover:bg-surface-container-lowest hover:shadow-ambient-sm"
                 onClick={() => {
                   onSelect(sauna.id);
                   setQuery("");
                 }}
               >
                 <p className="text-title-md text-on-surface">{sauna.name}</p>
-                <p className="text-body-md text-on-surface-variant">
+                <p className="text-body-md text-on-surface-variant mt-0.5">
                   {sauna.address}
                 </p>
-                <span className="inline-block mt-1 px-2 py-0.5 rounded-full text-label-sm text-on-surface-variant bg-surface-container-high">
+                <span className="inline-block mt-1.5 px-2 py-0.5 rounded-full bg-surface-container text-label-sm text-on-surface-variant">
                   {CATEGORY_LABELS[sauna.category]}
                 </span>
               </div>

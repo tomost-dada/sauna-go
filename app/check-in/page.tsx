@@ -59,34 +59,44 @@ export default function CheckInPage() {
   if (loading) {
     return (
       <div className="p-6 pb-24">
-        <SkeletonText className="w-24 h-7 mb-6" />
-        <Skeleton className="h-12 w-full mb-4" />
-        <Skeleton className="h-16 w-full mb-3" />
-        <Skeleton className="h-16 w-full mb-3" />
-        <Skeleton className="h-16 w-full" />
+        <SkeletonText className="w-32 h-9 mb-8 animate-shimmer" />
+        <Skeleton className="h-14 w-full mb-4 rounded-2xl animate-shimmer" />
+        <Skeleton className="h-16 w-full mb-3 rounded-2xl animate-shimmer" />
+        <Skeleton className="h-16 w-full mb-3 rounded-2xl animate-shimmer" />
+        <Skeleton className="h-16 w-full rounded-2xl animate-shimmer" />
       </div>
     );
   }
 
   return (
     <div className="p-6 pb-24 animate-fade-in">
-      <h1 className="text-display-sm text-on-surface mb-6">체크인</h1>
+      <h1 className="text-display-sm text-on-surface mb-8">✨ 체크인</h1>
 
+      {/* Step 1: Sauna selector — always visible */}
       <SaunaSelector
         saunas={saunas}
         onSelect={(id) => setSelectedSaunaId(id || null)}
         selectedId={selectedSaunaId}
       />
 
+      {/* Steps 2 + 3: appear after selection */}
       {selectedSaunaId && (
-        <>
-          <div className="mt-8">
-            <h2 className="text-headline-md text-on-surface mb-4">평가</h2>
+        <div className="animate-fade-in-up">
+          {/* Section: 평가 */}
+          <div className="mt-10">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-1 h-6 rounded-full bg-primary-container shrink-0" />
+              <h2 className="text-headline-md text-on-surface">평가</h2>
+            </div>
             <RatingForm ratings={ratings} onRatingChange={handleRatingChange} />
           </div>
 
-          <div className="mt-8">
-            <h2 className="text-headline-md text-on-surface mb-4">리뷰</h2>
+          {/* Section: 리뷰 */}
+          <div className="mt-10">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-1 h-6 rounded-full bg-primary-container shrink-0" />
+              <h2 className="text-headline-md text-on-surface">리뷰</h2>
+            </div>
             <ReviewInput
               review={review}
               note={note}
@@ -97,11 +107,11 @@ export default function CheckInPage() {
 
           <button
             onClick={handleSubmit}
-            className="mt-8 w-full py-4 rounded-3xl bg-gradient-to-r from-primary-container to-primary-fixed text-white text-title-md text-center active:scale-[0.98] transition-transform"
+            className="mt-10 w-full py-4 rounded-3xl gradient-primary text-white text-title-md text-center shadow-glow-primary active:scale-[0.98] transition-all"
           >
             체크인 완료
           </button>
-        </>
+        </div>
       )}
     </div>
   );

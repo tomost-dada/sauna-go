@@ -18,9 +18,14 @@ interface RatingFormProps {
 
 export default function RatingForm({ ratings, onRatingChange }: RatingFormProps) {
   return (
-    <div className="flex flex-col">
-      {RATING_CATEGORIES.map(({ key, label }) => (
-        <div key={key} className="flex items-center justify-between py-3">
+    <div className="flex flex-col rounded-2xl overflow-hidden">
+      {RATING_CATEGORIES.map(({ key, label }, index) => (
+        <div
+          key={key}
+          className={`flex items-center justify-between py-4 px-4 transition-colors ${
+            index % 2 === 0 ? "bg-surface-container-lowest/60" : ""
+          }`}
+        >
           <span className="text-body-lg text-on-surface">{label}</span>
           <StarRating
             value={ratings[key] ?? 0}
