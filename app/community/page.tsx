@@ -15,20 +15,12 @@ const regions = [
   { key: "jeju", label: "제주" },
 ] as const;
 
-const categories = [
-  { key: null, label: "전체" },
-  { key: "finnish", label: "핀란드식" },
-  { key: "bulgama", label: "불가마" },
-  { key: "hotel", label: "호텔" },
-  { key: "jjimjilbang", label: "찜질방" },
-] as const;
 
 const DELAY_CLASSES = ["", "delay-100", "delay-200", "delay-300", "delay-400"];
 
 export default function CommunityPage() {
   const router = useRouter();
   const [regionFilter, setRegionFilter] = useState<string | null>(null);
-  const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -38,7 +30,6 @@ export default function CommunityPage() {
 
   const filteredPosts = communityPosts.filter((post) => {
     if (regionFilter !== null && post.region !== regionFilter) return false;
-    if (categoryFilter !== null && post.category !== categoryFilter) return false;
     return true;
   });
 
@@ -90,18 +81,6 @@ export default function CommunityPage() {
               onClick={() => setRegionFilter(r.key)}
             >
               {r.label}
-            </Chip>
-          ))}
-        </div>
-        {/* Category filters */}
-        <div className="overflow-x-auto flex gap-2 scrollbar-hide mb-3">
-          {categories.map((c) => (
-            <Chip
-              key={c.label}
-              active={categoryFilter === c.key}
-              onClick={() => setCategoryFilter(c.key)}
-            >
-              {c.label}
             </Chip>
           ))}
         </div>
