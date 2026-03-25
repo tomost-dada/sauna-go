@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"npx create-next-app@latest . --typescript --tailwind --eslint --app --src=no --import-alias=\\\"@/*\\\" --use-npm 2>&1\",\"timeout\":120000,\"description\":\"Initialize Next.js project with TypeScri...",
+  "error": "Exit code 1\nThe directory saunago contains files that could conflict:\n\n  .omc/\n\nEither try using a new directory name, or remove the files listed above.",
+  "timestamp": "2026-03-25T07:00:47.716Z",
+  "retry_count": 1
+}

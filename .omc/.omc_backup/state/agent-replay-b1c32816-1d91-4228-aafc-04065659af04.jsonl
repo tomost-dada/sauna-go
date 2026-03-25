@@ -1,0 +1,12 @@
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"superpowers:brainstorming"}
+{"t":0,"agent":"a2af31f","agent_type":"code-reviewer","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a2af31f","agent_type":"code-reviewer","event":"agent_stop","success":true,"duration_ms":67218}
+{"t":0,"agent":"a039219","agent_type":"code-reviewer","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a039219","agent_type":"code-reviewer","event":"agent_stop","success":true,"duration_ms":29002}
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"superpowers:writing-plans"}
+{"t":0,"agent":"a3b4512","agent_type":"code-reviewer","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a3b4512","agent_type":"code-reviewer","event":"agent_stop","success":true,"duration_ms":112726}
+{"t":0,"agent":"adb19d1","agent_type":"code-reviewer","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"adb19d1","agent_type":"code-reviewer","event":"agent_stop","success":true,"duration_ms":58063}
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"superpowers:subagent-driven-development"}
+{"t":0,"agent":"a1f644c","agent_type":"general-purpose","event":"agent_start","parent_mode":"none"}
