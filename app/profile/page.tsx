@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { currentUser, checkIns, saunas, collections, COLLECTION_ITEMS_META } from "@/lib/mock-data";
 import { getLevelFromXP, getXPProgress, LEVEL_THRESHOLDS } from "@/lib/utils";
@@ -57,28 +57,6 @@ export default function ProfilePage() {
   const totalCount = COLLECTION_ITEMS_META.length;
   const userCollections = collections.filter((c) => c.userId === currentUser.id);
 
-  // Pick 2 random unvisited saunas
-  const visitedSaunaIds = new Set(userCheckIns.map((c) => c.saunaId));
-  const unvisitedSaunas = useMemo(() => {
-    const unvisited = saunas.filter((s) => !visitedSaunaIds.has(s.id));
-    // Deterministic shuffle using a simple seed
-    const shuffled = [...unvisited].sort((a, b) => (a.id > b.id ? 1 : -1));
-    return shuffled.slice(0, 2);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const REGION_LABEL: Record<string, string> = {
-    seoul: "서울",
-    gyeonggi: "경기",
-    jeju: "제주",
-  };
-  const CATEGORY_LABEL: Record<string, string> = {
-    finnish: "핀란드식",
-    bulgama: "불가마",
-    hotel: "호텔 스파",
-    jjimjilbang: "찜질방",
-  };
-
   if (loading) {
     return (
       <div className="pb-24">
@@ -99,12 +77,6 @@ export default function ProfilePage() {
               <Skeleton key={i} className="h-16 rounded-2xl" />
             ))}
           </div>
-        </div>
-        {/* Skeleton next conquest */}
-        <div className="px-6 mt-8">
-          <SkeletonText className="w-36 mb-4" />
-          <Skeleton className="h-24 rounded-2xl mb-3" />
-          <Skeleton className="h-24 rounded-2xl" />
         </div>
         {/* Skeleton ranking */}
         <div className="px-6 mt-8">
@@ -173,43 +145,9 @@ export default function ProfilePage() {
         <CollectionGrid collections={userCollections} meta={COLLECTION_ITEMS_META} />
         {unlockedCount < totalCount && (
           <p className="text-body-md text-on-surface-variant text-center mt-3">
-            사우나를 더 정복하면 새로운 아이템을 획득할 수 있어요!
+            퀘스트를 더 클리어하면 새로운 아이템을 획득할 수 있어요!
           </p>
         )}
-      </div>
-
-      {/* ── 3. Next Conquest Recommendation ── */}
-      <div className="px-6 mt-8">
-        <p className="text-display-sm text-on-surface mb-4">🎯 다음 정복지 추천</p>
-        <div className="flex flex-col gap-3">
-          {unvisitedSaunas.map((sauna) => (
-            <div
-              key={sauna.id}
-              className="bg-surface-container-lowest rounded-2xl p-4 shadow-ambient-sm"
-            >
-              <p className="text-title-md text-on-surface">{sauna.name}</p>
-              <div className="flex gap-2 mt-2 flex-wrap">
-                <span className="text-label-sm text-on-surface-variant bg-surface-container rounded-full px-2 py-0.5">
-                  {REGION_LABEL[sauna.region] ?? sauna.region}
-                </span>
-                <span className="text-label-sm text-on-surface-variant bg-surface-container rounded-full px-2 py-0.5">
-                  {CATEGORY_LABEL[sauna.category] ?? sauna.category}
-                </span>
-              </div>
-              <button
-                onClick={() => router.push("/check-in")}
-                className="mt-3 text-label-md text-primary font-semibold"
-              >
-                정복하러 가기 →
-              </button>
-            </div>
-          ))}
-          {unvisitedSaunas.length === 0 && (
-            <p className="text-body-md text-on-surface-variant text-center py-4">
-              🎉 모든 사우나를 정복했어요!
-            </p>
-          )}
-        </div>
       </div>
 
       {/* ── 4. Ranking Section ── */}

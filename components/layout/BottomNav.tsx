@@ -22,7 +22,6 @@ const tabs = [
       </svg>
     ),
   },
-  null, // placeholder for center button
   {
     href: "/community",
     label: "Community",
@@ -54,28 +53,7 @@ export default function BottomNav() {
         boxShadow: "0 -1px 0 rgba(44,47,48,0.06), 0 -8px 24px rgba(44,47,48,0.04)",
       }}
     >
-      {tabs.map((tab, index) => {
-        if (tab === null) {
-          // Center CHECK-IN FAB
-          return (
-            <Link
-              key="check-in"
-              href="/check-in"
-              className="flex flex-col items-center gap-1 -mt-5"
-            >
-              <span
-                className="w-14 h-14 rounded-full gradient-primary flex items-center justify-center"
-                style={{ boxShadow: "0 8px 32px rgba(254, 125, 94, 0.40)" }}
-              >
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="white" />
-                </svg>
-              </span>
-              <span className="text-label-sm text-on-surface-variant">CHECK-IN</span>
-            </Link>
-          );
-        }
-
+      {tabs.map((tab) => {
         const isActive = tab.href === "/" ? pathname === "/" : pathname.startsWith(tab.href);
 
         return (

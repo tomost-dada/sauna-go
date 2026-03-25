@@ -87,7 +87,7 @@ export default function MapPage() {
     <div className="pb-24 animate-fade-in relative">
       {/* Header */}
       <div className="flex items-center justify-between p-6 pb-2">
-        <h1 className="text-display-sm text-on-surface">🗺️ 정복 맵</h1>
+        <h1 className="text-display-sm text-on-surface">🗺️ 퀘스트 맵</h1>
         <button
           onClick={() => router.push("/")}
           className="px-4 py-2 rounded-full bg-surface-container-lowest shadow-ambient-sm text-label-md text-on-surface-variant active:scale-[0.97] transition-all"

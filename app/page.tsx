@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { currentUser, checkIns, saunas, saunaReviews } from "@/lib/mock-data";
 import { getXPProgress, getLevelFromXP } from "@/lib/utils";
@@ -19,9 +19,31 @@ const recentLogs = checkIns
     return { ...c, saunaName: sauna?.name ?? "알 수 없음" };
   });
 
+const REGION_LABEL: Record<string, string> = {
+  seoul: "서울",
+  gyeonggi: "경기",
+  jeju: "제주",
+};
+const CATEGORY_LABEL: Record<string, string> = {
+  finnish: "핀란드식",
+  bulgama: "불가마",
+  hotel: "호텔 스파",
+  jjimjilbang: "찜질방",
+};
+
 export default function Home() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+
+  const visitedSaunaIds = new Set(
+    checkIns.filter((c) => c.userId === currentUser.id).map((c) => c.saunaId)
+  );
+  const questSauna = useMemo(() => {
+    const unvisited = saunas.filter((s) => !visitedSaunaIds.has(s.id));
+    const sorted = [...unvisited].sort((a, b) => (a.id > b.id ? 1 : -1));
+    return sorted[0] ?? null;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 500);
@@ -98,8 +120,8 @@ export default function Home() {
         >
           <div className="relative z-10">
             <p className="text-label-md text-white/70 tracking-wider">TODAY</p>
-            <p className="text-headline-md text-white mt-1">오늘의 체크인 하기</p>
-            <p className="text-body-md text-white/70 mt-1">사우나 방문을 기록하고 XP를 받으세요!</p>
+            <p className="text-headline-md text-white mt-1">오늘도 사우나 갈까? 🔥</p>
+            <p className="text-body-md text-white/70 mt-1">체크인하고 경험치 받자!</p>
           </div>
           {/* Decorative circle */}
           <div
@@ -122,9 +144,9 @@ export default function Home() {
         >
           <span className="text-3xl">🗺️</span>
           <p className="text-headline-md text-on-surface mt-3">어디갈까?</p>
-          <p className="text-body-md text-on-surface-variant mt-1">사우나 탐험하기</p>
+          <p className="text-body-md text-on-surface-variant mt-1">새로운 퀘스트 찾기</p>
           <div className="flex items-center gap-1 mt-3">
-            <span className="text-label-md text-primary">정복 맵 보기</span>
+            <span className="text-label-md text-primary">퀘스트 맵 보기</span>
             <span className="text-primary">→</span>
           </div>
         </div>
@@ -136,7 +158,7 @@ export default function Home() {
         >
           <span className="text-3xl">👋</span>
           <p className="text-headline-md text-on-surface mt-3">같이갈까?</p>
-          <p className="text-body-md text-on-surface-variant mt-1">동료 찾기</p>
+          <p className="text-body-md text-on-surface-variant mt-1">사우나 메이트 구하기</p>
           <div className="flex items-center gap-1 mt-3">
             <span className="text-label-md text-primary">모임 보기</span>
             <span className="text-primary">→</span>
@@ -144,10 +166,35 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Quest Recommendation */}
+      {questSauna && (
+        <div className="px-6 mt-5">
+          <h2 className="text-display-sm text-on-surface mb-3">🎯 다음 퀘스트</h2>
+          <div className="bg-surface-container-lowest rounded-2xl p-5 shadow-ambient-sm">
+            <p className="text-label-md text-primary">다음 도전!</p>
+            <p className="text-headline-md text-on-surface mt-1">{questSauna.name}</p>
+            <div className="flex gap-2 mt-3 flex-wrap">
+              <span className="text-label-sm text-on-surface-variant bg-surface-container rounded-full px-2 py-0.5">
+                {REGION_LABEL[questSauna.region] ?? questSauna.region}
+              </span>
+              <span className="text-label-sm text-on-surface-variant bg-surface-container rounded-full px-2 py-0.5">
+                {CATEGORY_LABEL[questSauna.category] ?? questSauna.category}
+              </span>
+            </div>
+            <button
+              onClick={() => router.push("/check-in")}
+              className="mt-4 text-label-md text-primary font-semibold"
+            >
+              퀘스트 시작하기 →
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Sauna Log - Recent 3 */}
       <div className="px-6 mt-8">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-display-sm text-on-surface">사우나 로그</h2>
+          <h2 className="text-display-sm text-on-surface">내 모험 일지 📖</h2>
           <button
             onClick={() => router.push("/profile")}
             className="text-label-md text-primary"

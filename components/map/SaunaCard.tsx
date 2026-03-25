@@ -24,8 +24,8 @@ export default function SaunaCard({ sauna, isConquered, onClick }: SaunaCardProp
         onClick={onClick}
       >
         <div className="flex items-center gap-1.5 mb-1.5">
-          <span className="text-sm">✅</span>
-          <span className="text-label-sm text-primary font-semibold">정복 완료</span>
+          <span className="text-sm">⚡</span>
+          <span className="text-label-sm text-primary font-semibold">클리어!</span>
         </div>
         <p className="text-title-md text-on-surface truncate">{sauna.name}</p>
         <p className="text-label-sm text-on-surface-variant mt-1">
@@ -42,7 +42,7 @@ export default function SaunaCard({ sauna, isConquered, onClick }: SaunaCardProp
     >
       <div className="flex items-center gap-1.5 mb-1.5">
         <span className="text-sm">🔒</span>
-        <span className="text-label-sm text-on-surface-variant">미정복</span>
+        <span className="text-label-sm text-on-surface-variant">미도전</span>
       </div>
       <p className="text-title-md text-on-surface-variant truncate">{sauna.name}</p>
       <p className="text-label-sm text-on-surface-variant mt-1">
