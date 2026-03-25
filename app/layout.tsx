@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans, Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
+import BottomNav from "@/components/layout/BottomNav";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -36,6 +37,7 @@ export default function RootLayout({
     <html lang="ko" className={`${plusJakartaSans.variable} ${beVietnamPro.variable}`}>
       <body className="font-body text-on-surface bg-surface max-w-[390px] mx-auto min-h-screen relative">
         {children}
+        <BottomNav />
       </body>
     </html>
   );
